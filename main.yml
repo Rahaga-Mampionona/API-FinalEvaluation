@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info:
+  title: STD24092
+  version: 1.0.0
+  description: "Voici la spécification de STD24092"
+
+servers:
+  - url: http://localhost:8000
