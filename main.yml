@@ -2,7 +2,106 @@ openapi: 3.0.3
 info:
   title: STD24092
   version: 1.0.0
-  description: "Voici la spécification de STD24092"
+  description: "This is a specification of STD24092"
 
 servers:
   - url: http://localhost:8000
+
+paths:
+  /ping:
+    get:
+      summary: "Ping route"
+      responses:
+        '200':
+          description: Pong response
+          content:
+            application/json:
+              schema:
+                type: string
+                example: pong
+
+  /cars:
+    post:
+      summary: "Create a new car"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Car"
+      responses:
+        '201':
+          description: Car a été crée avec success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Car"
+        '400':
+          description: Car comportant cet ID est déjà existant
+    get:
+      summary: "Get all cars"
+      responses:
+        '200':
+          description: La liste des cars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Car"
+
+  /cars/{id}:
+    get:
+      summary: "Get a car by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Car trouvée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Car"
+        '404':
+          description: Car introuvable
+
+
+components:
+  schemas:
+    Characteristic:
+      type: object
+      properties:
+        max_speed:
+          type: number
+          example: 220
+        max_fuel_capacity:
+          type: number
+          example: 55
+      required:
+        - max_speed
+        - max_fuel_capacity
+
+    Car:
+      type: object
+      properties:
+        identifier:
+          type: string
+          example: "CARNUM69"
+        brand:
+          type: string
+          example: "Subaru"
+        model:
+          type: string
+          example: "Impreza"
+        characteristics:
+          $ref: "#/components/schemas/Characteristic"
+      required:
+        - identifier
+        - brand
+        - model
+        - characteristics
+
